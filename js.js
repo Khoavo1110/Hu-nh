@@ -1,268 +1,78 @@
-let noButtonClickCount = 0; // Contador para el botón "No"
-let noButtonState = 0; // Estado actual del botón "No"
+let noButtonState = 0;
 
-// Mostrar el gif inicial
-document.getElementById('gifContainer').style.display = 'block';
+// Hiện gif ban đầu
+showElement('gifContainer');
 
-document.getElementById('siBtn').addEventListener('click', function() {
-    // Ocultar el gif triste y mostrar el gif feliz
-    document.getElementById('sadGifContainer').style.display = 'none';
-    document.getElementById('sadGifContainer1').style.display = 'none';
-    document.getElementById('sadGifContainer2').style.display = 'none';
-    document.getElementById('gifContainer').style.display = 'none';
-    document.getElementById('happyGifContainer').style.display = 'block';
+document.getElementById('siBtn').addEventListener('click', handleYesClick);
+document.getElementById('noBtn').addEventListener('click', handleNoClick);
 
-    // Ocultar los botones "Pregunta Sí" y "No "
-    document.getElementById('question').style.display = 'none';
-    document.getElementById('siBtn').style.display = 'none';
+function handleYesClick() {
+    hideAll(['gifContainer', 'sadGifContainer', 'sadGifContainer1', 'sadGifContainer2', 'happyGifContainer2', 'happyGifContainer3', 'happyGifContainer4']); 
+    // Ẩn hết tất cả luôn cho sạch
+
+    showElement('happyGifContainer');
+    hideAll(['question', 'siBtn', 'noBtn']);
     document.body.classList.add('bg-green');
-    document.getElementById('noBtn').style.display = 'none';
 
-    // Mostrar el mensaje específico
-    document.getElementById('messageContainer').style.display = 'block';
-    document.getElementById('messageContainer').innerHTML = 'nghĩ kĩ chưa';
+    showElement('messageContainer');
+    document.getElementById('messageContainer').innerHTML = 'anh cũng yêu em';
 
-    // Mostrar otro gif después de 3 segundos
-    setTimeout(function() {
-        document.getElementById('happyGifContainer').style.display = 'none';
-        document.getElementById('happyGifContainer2').style.display = 'block';
-    }, 1000);
+    const happyGifs = ['happyGifContainer2', 'happyGifContainer3', 'happyGifContainer4'];
 
-    setTimeout(function() {
-        document.getElementById('happyGifContainer2').style.display = 'none';
-        document.getElementById('happyGifContainer3').style.display = 'block';
-    }, 2000);
-    setTimeout(function() {
-        document.getElementById('happyGifContainer3').style.display = 'none';
-        document.getElementById('happyGifContainer4').style.display = 'block';
-    }, 3000);
-  
-});
+    happyGifs.forEach((gif, index) => {
+        setTimeout(() => {
+            hideAll(happyGifs.concat(['happyGifContainer']));
+            showElement(gif);
+        }, (index + 1) * 1000);
+    });
+}
 
+function handleNoClick() {
+    const noTexts = [
+        'Chọn lại đi mà~', 'Chọn kỹ vô nha!', 'Nghĩ kỹ chưa đó?', 'Đừng màaa~',
+        'Bỏ tui lại sao được huhu', 'Là sao nữa trời?', 'Làm lại đi mà~', 'Nữa hả? Bấm nút bên trái kìa!',
+        'Nhấn nút bên trái á nha!', 'Ahhh, không thương anh rồi đúng hông?', 'Không có tình cảm gì luôn hả?',
+        'Có thương anh xíu nào hong?', 'Nghĩ kỹ chưa zợ~', 'NOOO...', 'Nghĩ kỹ lại đi mà~', 'Anh yêu em nhiều lắm á!'
+    ];
+    hideElement('gifContainer');
+    const sadGifs = ['sadGifContainer', 'sadGifContainer2', 'sadGifContainer1'];
 
-document.getElementById('noBtn').addEventListener('click', function() {
-    switch (noButtonState) {
-        case 0:
-            // Primera vez haciendo clic en "No"
-            document.getElementById('happyGifContainer').style.display = 'none';
-            document.getElementById('gifContainer').style.display = 'none';
-            document.getElementById('sadGifContainer').style.display = 'block';
+    if (noButtonState < noTexts.length) {
+        document.getElementById('noBtn').innerHTML = noTexts[noButtonState];
+        document.getElementById('noBtn').style.backgroundColor = '#F1330A';
 
-            // Modificar el botón "No"
-            document.getElementById('noBtn').innerHTML = 'chọn lại đi mà';
-            document.getElementById('noBtn').style.backgroundColor = '#F1330A';
-          
-            
-            document.getElementById('siBtn').style.fontSize = '40px';
-            document.getElementById('siBtn').style.padding = '20px 40px';
-       
-            
-           
+        if (noButtonState < 3) {
+            hideAll(sadGifs);
+            showElement(sadGifs[noButtonState]);
+        }
 
-        
-            noButtonClickCount++;
-            noButtonState++;
-            break;
+        const siBtn = document.getElementById('siBtn');
+        const size = 40 + (noButtonState * 20);
+        siBtn.style.fontSize = `${size}px`;
+        siBtn.style.padding = `${size / 2}px ${size}px`;
 
-        case 1:
-            // Segunda vez haciendo clic en "No"
-
-            document.getElementById('noBtn').innerHTML = 'chọn kĩ đi';
-            document.getElementById('noBtn').style.backgroundColor = '#F1330A';
-            document.getElementById('sadGifContainer').style.display = 'none';
-            document.getElementById('sadGifContainer2').style.display = 'block';
-
-            // Hacer que el botón "Sí" crezca
-            document.getElementById('siBtn').style.fontSize = '50px';
-            document.getElementById('siBtn').style.padding = '30px 50px';
-        
-            noButtonState++;
-            break;
-
-        case 2:
-           
-            document.getElementById('noBtn').innerHTML = 'chọn kĩ đi ';
-            document.getElementById('noBtn').style.backgroundColor = '#F1330A';
-            document.getElementById('sadGifContainer').style.display = 'none';
-            document.getElementById('sadGifContainer2').style.display = 'none';
-            document.getElementById('sadGifContainer1').style.display = 'block';
-
-            // Hacer que el botón "Sí" crezca
-            document.getElementById('siBtn').style.fontSize = '60px';
-            document.getElementById('siBtn').style.padding = '40px 60px';
-        
-            noButtonState++;
-            break;
-        
-        case 3:
-           
-            document.getElementById('noBtn').innerHTML = 'Nghĩ kĩ chưa';
-            document.getElementById('noBtn').style.backgroundColor = '#F1330A';
-
-            // Hacer que el botón "Sí" crezca
-            document.getElementById('siBtn').style.fontSize = '70px';
-            document.getElementById('siBtn').style.padding = '50px 70px';
-        
-            noButtonState++;
-            break;
-        case 4:
-           
-            document.getElementById('noBtn').innerHTML = 'dừngừng z mà';
-            document.getElementById('noBtn').style.backgroundColor = '#F1330A';
-
-            // Hacer que el botón "Sí" crezca
-            document.getElementById('siBtn').style.fontSize = '80px';
-            document.getElementById('siBtn').style.padding = '60px 80px';
-         
-            noButtonState++;
-            break;
-        case 5:
-           
-            document.getElementById('noBtn').innerHTML = 'bỏ tui lại saosao';
-            document.getElementById('noBtn').style.backgroundColor = '#F1330A';
-
-            // Hacer que el botón "Sí" crezca
-            document.getElementById('siBtn').style.fontSize = '90px';
-            document.getElementById('siBtn').style.padding = '70px 90px';
-
-            noButtonState++;
-            break;
-        case 6:
-           
-            document.getElementById('noBtn').innerHTML = 'là sao nữa';
-            document.getElementById('noBtn').style.backgroundColor = '#F1330A';
-
-            // Hacer que el botón "Sí" crezca
-            document.getElementById('siBtn').style.fontSize = '100px';
-            document.getElementById('siBtn').style.padding = '80px 100px';
-            
-            noButtonState++;
-            break;
-        case 7:
-           
-            document.getElementById('noBtn').innerHTML = 'làm lại đi mà';
-            document.getElementById('noBtn').style.backgroundColor = '#F1330A';
-
-            // Hacer que el botón "Sí" crezca
-            document.getElementById('siBtn').style.fontSize = '120px';
-            document.getElementById('siBtn').style.padding = '90px 120px';
-  
-            noButtonState++;
-            break;
-        case 8:
-           
-            document.getElementById('noBtn').innerHTML = 'nữa hả nút bên trái kia';
-            document.getElementById('noBtn').style.backgroundColor = '#F1330A';
-
-            document.getElementById('siBtn').style.fontSize = '140px';
-            document.getElementById('siBtn').style.padding = '100px 140px';
-       
-            noButtonState++;
-            break;
-
-        case 9:
-           
-            document.getElementById('noBtn').innerHTML = 'nhân nut ben trái á';
-            document.getElementById('noBtn').style.backgroundColor = '#F1330A';
-
-            // Hacer que el botón "Sí" crezca
-            document.getElementById('siBtn').style.fontSize = '160px';
-            document.getElementById('siBtn').style.padding = '110px 160px';
-          
-            noButtonState++;
-            break;
-
-        case 10:
-           
-        document.getElementById('noBtn').innerHTML = 'ahhh, khong yeu anh rồirồi';
-            document.getElementById('noBtn').style.backgroundColor = '#F1330A';
-
-         
-            document.getElementById('siBtn').style.fontSize = '180px';
-            document.getElementById('siBtn').style.padding = '120px 180px';
-    
-            noButtonState++;
-            break;
-        case 11:
-           
-            document.getElementById('noBtn').innerHTML = 'không có tình cảm hả ';
-            document.getElementById('noBtn').style.backgroundColor = '#F1330A';
-
-            document.getElementById('siBtn').style.fontSize = '200px';
-            document.getElementById('siBtn').style.padding = '130px 200px';
-            
-            noButtonState++;
-            break;
-        
-        case 12:
-           
-            document.getElementById('noBtn').innerHTML = 'có tình cảm không á';
-            document.getElementById('noBtn').style.backgroundColor = '#F1330A';
-
-            // Hacer que el botón "Sí" crezca
-            document.getElementById('siBtn').style.fontSize = '220px';
-            document.getElementById('siBtn').style.padding = '140px 220px';
-    
-            noButtonState++;
-            break;
-        
-        case 13:
-           
-            document.getElementById('noBtn').innerHTML = 'nghĩ kĩ chưachưa';
-            document.getElementById('noBtn').style.backgroundColor = '#F1330A';
-
-            document.getElementById('siBtn').style.fontSize = '240px';
-            document.getElementById('siBtn').style.padding = '150px 240px';
-         
-            noButtonState++;
-            break;
-        
-        case 14:
-           
-            document.getElementById('noBtn').innerHTML = 'NO...';
-            document.getElementById('noBtn').style.backgroundColor = '#F1330A';
-
-            // Hacer que el botón "Sí" crezca
-            document.getElementById('siBtn').style.fontSize = '260px';
-            document.getElementById('siBtn').style.padding = '160px 260px';
-            
-            noButtonState++;
-            break;
-        
-        case 15:
-           
-            document.getElementById('noBtn').innerHTML = 'nghĩ kĩ đi mà';
-            document.getElementById('noBtn').style.backgroundColor = '#F1330A';
-
-            // Hacer que el botón "Sí" crezca
-            document.getElementById('siBtn').style.fontSize = '280px';
-            document.getElementById('siBtn').style.padding = '170px 280px';
-          
-            noButtonState++;
-            break;
-        
-     
-        case 16:
-                document.getElementById('noBtn').innerHTML = 'anh yêu em!';
-                document.getElementById('noBtn').style.backgroundColor = '#F1330A';
-              
-                document.getElementById('sadGifContainer').style.display = 'none';
-                document.getElementById('sadGifContainer1').style.display = 'none';
-                document.getElementById('sadGifContainer2').style.display = 'none';
-                document.getElementById('gifContainer').style.display = 'block';
-                document.getElementById('happyGifContainer').style.display = 'none';
-                // Vuelve al estado 0
-                noButtonState = 0;
-                break;
-        
-
-        default:
-            // Por si acaso, maneja cualquier otro caso aquí
-            break;
+        noButtonState++;
+    } else {
+        handleYesClick();
     }
-});
- 
- 
- 
- 
-            
+}
+
+function resetNoButton() {
+    hideAll(['sadGifContainer', 'sadGifContainer1', 'sadGifContainer2', 'happyGifContainer']);
+    showElement('gifContainer');
+    noButtonState = 0;
+}
+
+function showElement(id) {
+    document.getElementById(id).style.display = 'block';
+}
+
+function hideElement(id) {
+    document.getElementById(id).style.display = 'none';
+}
+
+function hideAll(ids) {
+    ids.forEach(id => {
+        hideElement(id);
+    });
+}
